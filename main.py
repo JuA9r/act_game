@@ -6,7 +6,7 @@
 
 # import pygame
 import pygame as pg
-from pygame import *
+from pygame.locals import *
 
 # import random
 import random
@@ -20,127 +20,155 @@ from time import sleep
 
 WIDTH = 800
 HEIGHT = 600
-_surface = Rect(0, 0, 800, 600)
+_surface = pg.Rect(0, 0, 800, 600)
 
 # block color
 my_block = "white"
-enemy_Block = "red"
+enemy_Block = "magenta"
 
-# Number of collisions
-coll_count = 0
+# player information
+player_speed = 5
+block_width = 50
+block_height = 50
+
+# number of enemy
+num_enemies = 4
 
 # count down of time
 Time = 3
 message = "Start"
 
 
-def start_timer(secs : any) -> None:
+# def start_timer(secs : any) -> None:
+#
+#     """
+#         three seconds countdown to game start
+#     """
+#
+#     for i in range(secs, -1, -1):
+#         print(i)
+#         sleep(1)
+#     print(message)
+#     return
+# start_timer(Time)
+
+
+# player
+class Player(pg.sprite.Sprite):
 
     """
-        three seconds countdown to game start
+        Player block generation
     """
 
-    for i in range(secs, -1, -1):
-        print(i)
-        sleep(1)
-    print(message)
-    return
-start_timer(Time)
+    def __init__(self, width, height) -> None:
+        super().__init__()
+        self.image = pg.Surface((width, height))
+        self.image.fill(my_block)
+        self.rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT - height - 10))
+
+    def update(self, keys) -> None:
+        self.rect.clamp_ip(_surface)
+
+        if keys[pg.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= player_speed
+
+        if keys[pg.K_RIGHT] and self.rect.right < WIDTH:
+            self.rect.x += player_speed
+
+    def draw(self, screen) -> None:
+        screen.blit(self.image, self.rect)
+
+
+class Enemy(pg.sprite.Sprite):
+
+    """
+        Enemy block generation
+    """
+
+    def __init__(self, width, height) -> None:
+        super().__init__()
+        self.image = pg.Surface((width, height))
+        self.image.fill(enemy_Block)
+        self.rect = self.image.get_rect(
+            center=(random.randint(0, WIDTH), random.randint(0, HEIGHT)))
+        self.enemy_speed = random.randint(5, 23)
+
+    def update(self, *args, **kwargs) -> None:
+        self.rect.y += self.enemy_speed
+
+        if self.rect.top > HEIGHT:
+            self.rect.y = random.randint(-HEIGHT, 0)
+            self.rect.x = random.randint(0, WIDTH)
+            self.enemy_speed = random.randint(5, 23)
+
+    def draw(self, screen) -> None:
+        screen.blit(self.image, self.rect)
+
+
+# timer
+class Timer(pg.sprite.Sprite):
+
+    """
+        Setting a time limit
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.font = pg.font.Font(None, 36)
+        self.start_time = pg.time.get_ticks()
+        self.time_limit = 60
+
+    def update(self, *args, **kwargs) -> None:
+        pass
+
+    def draw(self, screen) -> None:
+        elapsed_time = (pg.time.get_ticks() - self.start_time) // 1000
+        remaining_time = max(self.time_limit - elapsed_time, 0)
+        timer_text = self.font.render("Time: " + str(remaining_time), True, my_block)
+        screen.blit(timer_text, (10, 10))
 
 
 class act_game:
+    def __init__(self) -> None:
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption("action game")
+        self.clock = pg.time.Clock()
+        self.player = Player(block_width, block_height)
+        self.enemies = pg.sprite.Group()
+        for _ in range(num_enemies):
+            enemy = Enemy(block_width, block_height)
+            self.enemies.add(enemy)
+        self.timer = Timer()
 
-    """
-        generate act_game class
-    """
+    def running(self) -> None:
+        done = False
+        while not done:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    done = True
 
-    # player
-    class player(pg.sprite.Sprite):
-        def __init__(self, player_width, player_height):
-            super().__init__()
-            self.player_width = 50
-            self.player_height = 50
-            self.player_x = WIDTH // 2 - player_width // 2
-            self.player_y = HEIGHT - player_height - 10
-            self.player_speed = 5
+            keys = pg.key.get_pressed()
+            self.player.update(keys)
 
-        def update(self, *args, **kwargs):
-            self.rect.clamp_ip(_surface)
+            self.enemies.update()
 
-            if keys[pg.K_LEFT]:
-                self.player_x -= self.player_speed
+            self.screen.fill("black")
+            self.player.draw(self.screen)
+            self.enemies.draw(self.screen)
+            self.timer.draw(self.screen)
 
-            elif keys[pg.K_RIGHT]:
-                self.player_x += self.player_speed
+            pg.display.update()
+            self.clock.tick(60)
 
-            elif keys[pg.K_UP]:
-                self.player_y -= self.player_speed
-
-            elif keys[pg.K_DOWN]:
-                self.player_y += self.player_speed
-
-            else:
-                pass
-
-        def draw(self):
-            pg.draw.rect(screen, enemy_Block,
-                         (player_x, player_y, player_width, player_height))
-
-    # enemy
-    class enemy(pg.sprite.Sprite):
-        def __init__(self):
-            super().__init__()
-            num_enemy = 5
-            _enemy = []
-            for _ in range(num_enemy):
-                enemy_x = random.randint(0, WIDTH - player_width)
-                enemy_y = random.randint(-HEIGHT, 0)
-                enemy_speed = random.randint(1, 5)
-                _enemy.append([enemy_x, enemy_y, enemy_speed])
-
-        def update(self, *args, **kwargs):
-            self.rect.clamp_ip(_surface)
-            self.enemy_y += self.enemy_speed
-
-        def draw(self):
-            for _enemy in enemies:
-                pg.draw.rect(screen, my_block,
-                             (_enemy[0], _enemy[1], player_width, player_height))
-
-    # timer
-    class timer(pg.sprite.Sprite):
-        def __init__(self, font, start_time, time_limit):
-            super().__init__()
-            self.font = pg.font.Font(None, 36)
-            self.start_time = pg.time.get_ticks()
-            self.time_limit = 120
-
-        def update(self, *args, **kwargs):
-            pass
-
-        def draw(self):
-            rem_time = max(time_limit - elapsed_time, 0)
-            timer_text = font.render("Time: " + str(rem_time), True, my_block)
-            screen.blit(timer_text, (10, 10))
+        pg.quit()
+        sys.exit()
 
 
 def main():
-    pg.init()
-    screen = pg.display.set_mode((WIDTH, HEIGHT))
-    pg.display.set_caption("action game")
-    screen.fill((0, 0, 0))
+    game = act_game()
+    game.running()
 
-    done = False
-    while not done:
-        for event in pg.event.get():
-            if event.type == QUIT:
-                pg.quit()
-                sys.exit()
-
-        pg.display.update()
-
-        clock = pg.time.Clock()
-        clock.tick(60)
 
 if __name__ == "__main__":
     main()
