@@ -1,6 +1,6 @@
 """
 
-    action game program
+    Action game program
 
 """
 
@@ -129,6 +129,11 @@ class Timer(pg.sprite.Sprite):
 
 
 class act_game:
+
+    """
+        Basic functions
+    """
+
     def __init__(self) -> None:
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -168,7 +173,6 @@ class act_game:
 def main():
     game = act_game()
     game.running()
-
 
 if __name__ == "__main__":
     main()
