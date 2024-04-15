@@ -18,8 +18,8 @@ import sys
 from time import sleep
 
 
-WIDTH = 800
-HEIGHT = 600
+WIDTH: int = 800
+HEIGHT: int = 600
 _surface = pg.Rect(0, 0, 800, 600)
 
 # block color
@@ -39,7 +39,7 @@ Time = 3
 message = "Start"
 
 
-# def start_timer(secs : any) -> None:
+# def start_timer(secs: any) -> None:
 #
 #     """
 #         three seconds countdown to game start
@@ -64,7 +64,7 @@ class Player(pg.sprite.Sprite):
         super().__init__()
         self.image = pg.Surface((width, height))
         self.image.fill(my_block)
-        self.rect = self.image.get_rect(center=(WIDTH // 2, HEIGHT - height - 10))
+        self.rect = self.image.get_rect(center=(WIDTH//2, HEIGHT-height-10))
 
     def update(self, keys) -> None:
         self.rect.clamp_ip(_surface)
@@ -118,14 +118,34 @@ class Timer(pg.sprite.Sprite):
         self.start_time = pg.time.get_ticks()
         self.time_limit = 60
 
-    def update(self, *args, **kwargs) -> None:
-        pass
+    def update(self, *args, **kwargs) -> None: ...
 
     def draw(self, screen) -> None:
         elapsed_time = (pg.time.get_ticks() - self.start_time) // 1000
         remaining_time = max(self.time_limit - elapsed_time, 0)
         timer_text = self.font.render("Time: " + str(remaining_time), True, my_block)
         screen.blit(timer_text, (10, 10))
+
+
+class block_collision(pg.sprite.Sprite):
+
+    """
+        Collision detection
+    """
+
+    def __init__(self, player, enemies) -> None:
+        super().__init__()
+        self.player = player
+        self.enemies = enemies
+        self.coll_count = 0
+
+    def update(self, *args, **kwargs) -> None: ...
+
+    def collision(self) -> None:
+        if pg.sprite.spritecollideany(self.player, self.enemies):
+            self.coll_count += 1
+            return True
+        return False
 
 
 class act_game:
@@ -137,17 +157,18 @@ class act_game:
     def __init__(self) -> None:
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.display.set_caption("action game")
+        pg.display.set_caption("Action game")
         self.clock = pg.time.Clock()
         self.player = Player(block_width, block_height)
         self.enemies = pg.sprite.Group()
         for _ in range(num_enemies):
             enemy = Enemy(block_width, block_height)
             self.enemies.add(enemy)
+        self._collision = block_collision(self.player, self.enemies)
         self.timer = Timer()
 
     def running(self) -> None:
-        done = False
+        done, _game = False, False
         while not done:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
@@ -158,6 +179,14 @@ class act_game:
 
             self.enemies.update()
 
+            if self._collision.coll_count > 0:
+                print("collision")
+
+            if self._collision.collision():
+                if self._collision.coll_count == 5:
+                    print("\nGame over")
+                    _game = True
+
             self.screen.fill("black")
             self.player.draw(self.screen)
             self.enemies.draw(self.screen)
@@ -165,6 +194,9 @@ class act_game:
 
             pg.display.update()
             self.clock.tick(60)
+
+            if self.timer.time_limit == 0 or _game:
+                done = True
 
         pg.quit()
         sys.exit()
