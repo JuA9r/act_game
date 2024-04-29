@@ -18,10 +18,10 @@ _Basic functions_
 
 _main_
 
-- [ ] Player generation
-- [ ] Creation of obstacles
-- [ ] Introduction of keyboard operation
-- [ ] Setting a time limit
+- [x] Player generation
+- [x] Creation of obstacles
+- [x] Introduction of keyboard operation
+- [x] Setting a time limit
 - [ ] Collision detection with obstacles
-- [ ] Collision limit
-- [ ] Falling speed
+- [x] Collision limit
+- [x] Falling speed
