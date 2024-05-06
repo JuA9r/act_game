@@ -135,11 +135,14 @@ class Timer(pg.sprite.Sprite):
             print("\nGame clear")
             sys.exit()
 
-        if remaining_time <= 10:
+        if remaining_time <= 10 and not remaining_time <= 5:
+            timer_text = self.font.render("Time: " + str(remaining_time), True, "gold")
+
+        elif remaining_time <= 5:
             timer_text = self.font.render("Time: " + str(remaining_time), True, "red")
-        elif remaining_time == 0:
+
+        else:
             pass
-            # print("Game Clear")
 
         screen.blit(timer_text, (10, 10))
 

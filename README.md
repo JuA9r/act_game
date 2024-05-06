@@ -22,6 +22,6 @@ _main_
 - [x] Creation of obstacles
 - [x] Introduction of keyboard operation
 - [x] Setting a time limit
-- [ ] Collision detection with obstacles
+- [x] Collision detection with obstacles
 - [x] Collision limit
 - [x] Falling speed
