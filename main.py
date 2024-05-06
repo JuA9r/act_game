@@ -43,18 +43,18 @@ Time = 3
 message = "Start"
 
 
-# def start_timer(secs: any) -> None:
-#
-#     """
-#         three seconds countdown to game start
-#     """
-#
-#     for i in range(secs, -1, -1):
-#         print(i)
-#         sleep(1)
-#     print(message)
-#     return
-# start_timer(Time)
+def start_timer(secs: any) -> None:
+
+    """
+        three seconds countdown to game start
+    """
+
+    for i in range(secs, -1, -1):
+        print(i)
+        sleep(1)
+    print(message)
+    return
+start_timer(Time)
 
 
 # player
