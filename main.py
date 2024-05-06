@@ -36,7 +36,7 @@ block_height = 50
 num_enemies = 5
 
 # game time
-game_time = 30
+game_time = 20
 
 # count down of time
 Time = 3
