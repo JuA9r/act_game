@@ -35,6 +35,9 @@ block_height = 50
 # number of enemy
 num_enemies = 5
 
+# game time
+game_time = 30
+
 # count down of time
 Time = 3
 message = "Start"
@@ -119,15 +122,18 @@ class Timer(pg.sprite.Sprite):
         super().__init__()
         self.font = pg.font.Font(None, 36)
         self.start_time = pg.time.get_ticks()
-        self.time_limit = 5
 
     def update(self, *args, **kwargs) -> None: ...
 
     def draw(self, screen) -> None:
-        elapsed_time = (pg.time.get_ticks() - self.start_time) // 1000
-        remaining_time = max(self.time_limit - elapsed_time, 0)
+        elapsed_time = (pg.time.get_ticks() - game_time) // 1000
+        remaining_time = max(game_time - elapsed_time, 0)
         timer_text = self.font.render("Time: " + str(remaining_time), True, "lime")
-        print(remaining_time)
+        # print(remaining_time)
+
+        if elapsed_time == game_time + 1:
+            print("\nGame clear")
+            sys.exit()
 
         if remaining_time <= 10:
             timer_text = self.font.render("Time: " + str(remaining_time), True, "red")
@@ -135,7 +141,6 @@ class Timer(pg.sprite.Sprite):
             pass
             # print("Game Clear")
 
-        print(remaining_time)
         screen.blit(timer_text, (10, 10))
 
 
