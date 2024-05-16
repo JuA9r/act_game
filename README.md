@@ -1,4 +1,4 @@
-# make calculator
+# make Action game
 ## __Execution environment__
 - Python >= 3.11.0
 - pygame >= 2.5.2

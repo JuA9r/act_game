@@ -36,7 +36,7 @@ block_height = 50
 num_enemies = 5
 
 # game time
-game_time = 20
+game_time = 30
 
 # count down of time
 Time = 3
@@ -97,7 +97,7 @@ class Enemy(pg.sprite.Sprite):
         self.id = id
         self.rect = self.image.get_rect(
             center=(random.randint(0, WIDTH), random.randint(0, HEIGHT)))
-        self.enemy_speed = random.randint(7, 23)
+        self.enemy_speed = random.randint(7, 25)
 
     def update(self, *args, **kwargs) -> None:
         self.rect.y += self.enemy_speed
@@ -105,7 +105,7 @@ class Enemy(pg.sprite.Sprite):
         if self.rect.top > HEIGHT:
             self.rect.y = random.randint(-HEIGHT, 0)
             self.rect.x = random.randint(0, WIDTH)
-            self.enemy_speed = random.randint(7, 23)
+            self.enemy_speed = random.randint(7, 25)
 
     def draw(self, screen) -> None:
         screen.blit(self.image, self.rect)
