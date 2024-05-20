@@ -25,7 +25,7 @@ _surface = pg.Rect(0, 0, 800, 600)
 
 # block color
 my_block = "white"
-enemy_block = "magenta"
+enemy_block = "fuchsia"
 
 # player information
 player_speed = 7
@@ -136,7 +136,7 @@ class Timer(pg.sprite.Sprite):
             sys.exit()
 
         if remaining_time <= 10 and not remaining_time <= 5:
-            timer_text = self.font.render("Time: " + str(remaining_time), True, "gold")
+            timer_text = self.font.render("Time: " + str(remaining_time), True, "yellow")
 
         elif remaining_time <= 5:
             timer_text = self.font.render("Time: " + str(remaining_time), True, "red")
