@@ -139,7 +139,7 @@ class Timer(pg.sprite.Sprite):
             timer_text = self.font.render("Time: " + str(remaining_time), True, "yellow")
 
         elif remaining_time <= 5:
-            timer_text = self.font.render("Time: " + str(remaining_time), True, "red")
+            timer_text = self.font.render("Time: " + str(remaining_time), True, "crimson")
 
         else:
             pass
