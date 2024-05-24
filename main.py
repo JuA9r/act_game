@@ -19,8 +19,7 @@ from time import sleep
 
 
 # window size
-WIDTH: int = 800
-HEIGHT: int = 600
+WIDTH, HEIGHT = 800, 600
 _surface = pg.Rect(0, 0, 800, 600)
 
 # block color
