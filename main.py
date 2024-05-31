@@ -95,7 +95,8 @@ class Enemy(pg.sprite.Sprite):
         self.image.fill(enemy_block)
         self.id = id
         self.rect = self.image.get_rect(
-            center=(random.randint(0, WIDTH), random.randint(0, HEIGHT)))
+            center=(random.randint(0, WIDTH), random.randint(0, HEIGHT))
+        )
         self.enemy_speed = random.randint(7, 25)
 
     def update(self, *args, **kwargs) -> None:
@@ -165,7 +166,7 @@ class block_collision(pg.sprite.Sprite):
         for enemy in self.enemies:
             if pg.sprite.collide_rect(self.player, enemy):
                 self.coll_count += 1
-                print(f"\n collision: {self.coll_count}")
+                print(f"\ncollision: {self.coll_count}")
                 enemy.kill()
                 return True
         # print(self.coll_count)
