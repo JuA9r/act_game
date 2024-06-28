@@ -17,7 +17,6 @@ import sys
 # import sleep
 from time import sleep
 
-
 # window size
 WIDTH, HEIGHT = 800, 600
 _surface = pg.Rect(0, 0, 800, 600)
@@ -48,7 +47,7 @@ def start_timer(secs: any) -> None:
         three seconds countdown to game start
     """
 
-    for i in range(secs, -1, -1):
+    for i in range(secs, 0, -1):
         print(i)
         sleep(1)
     print(message)
@@ -80,7 +79,7 @@ class Player(pg.sprite.Sprite):
 
     def draw(self, screen) -> None:
         screen.blit(self.image, self.rect)
-
+        
 
 # enemy
 class Enemy(pg.sprite.Sprite):
