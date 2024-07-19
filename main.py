@@ -69,14 +69,13 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=(WIDTH//2, HEIGHT-height-10))
 
     def update(self, keys, *args, **kwargs) -> None:
-        self.rect.clamp_ip(_surface)
 
         if keys[pg.K_LEFT] and self.rect.left > 0:
             self.rect.x -= player_speed
 
         if keys[pg.K_RIGHT] and self.rect.right < WIDTH:
             self.rect.x += player_speed
-
+        
     def draw(self, screen) -> None:
         screen.blit(self.image, self.rect)
         
