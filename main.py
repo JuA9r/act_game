@@ -14,7 +14,7 @@ import random
 # import sys
 import sys
 
-# import sleep
+# import time
 from time import sleep
 
 # window size
