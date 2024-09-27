@@ -93,7 +93,10 @@ class Enemy(pg.sprite.Sprite):
         self.image.fill(enemy_block)
         self.id = id
         self.rect = self.image.get_rect(
-            center=(random.randint(0, WIDTH), random.randint(0, HEIGHT))
+            center=(
+                random.randint(0, WIDTH),
+                random.randint(0, HEIGHT)
+            )
         )
         self.enemy_speed = random.randint(7, 25)
 
