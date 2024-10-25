@@ -1,7 +1,7 @@
 # make Action games
 ## __Execution environment__
-- Python >= 3.11.0
-- pygame >= 2.5.2
+- Python --> 3.12
+- pygame --> 2.5.2
 
 ## __Overview__
 - Generate a action game
