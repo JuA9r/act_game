@@ -132,10 +132,6 @@ class Timer(pg.sprite.Sprite):
         timer_text = self.font.render("Time: " + str(remaining_time), True, "lime")
         # print(remaining_time)
 
-        if elapsed_time == game_time + 1:
-            print("\nGame clear")
-            sys.exit()
-
         if remaining_time <= 10 and not remaining_time <= 5:
             timer_text = self.font.render("Time: " + str(remaining_time), True, "yellow")
 
@@ -144,6 +140,10 @@ class Timer(pg.sprite.Sprite):
 
         else:
             pass
+
+        if elapsed_time == game_time + 1:
+            print("\nGame clear")
+            sys.exit()
 
         screen.blit(timer_text, (10, 10))
 
@@ -184,12 +184,15 @@ class act_game:
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption("Action game")
+
         self.clock = pg.time.Clock()
         self.player = Player(block_width, block_height)
         self.enemies = pg.sprite.Group()
+
         for i in range(num_enemies):
             enemy = Enemy(block_width, block_height, i)
             self.enemies.add(enemy)
+
         self._collision = block_collision(self.player, self.enemies)
         self.timer = Timer()
 
@@ -226,7 +229,7 @@ class act_game:
         sys.exit()
 
 
-def main():
+def main() -> None:
     game = act_game()
     game.running()
 
