@@ -44,6 +44,11 @@ message = "Start"
 def start_timer(secs: any) -> None:
 
     """
+    :param secs: time in seconds
+    :return: None
+    """
+
+    """
         three seconds countdown to game start
     """
 
@@ -63,12 +68,25 @@ class Player(pg.sprite.Sprite):
     """
 
     def __init__(self, width, height) -> None:
-        super().__init__()
+
+        """
+        :param width: width of player
+        :param height: height of player
+        """
+
+        pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((width, height))
         self.image.fill(my_block)
         self.rect = self.image.get_rect(center=(WIDTH//2, HEIGHT-height-10))
 
     def update(self, keys, *args, **kwargs) -> None:
+
+        """
+        :param keys:
+        :param args:
+        :param kwargs:
+        :return: None
+        """
 
         if keys[pg.K_LEFT] and self.rect.left > 0:
             self.rect.x -= player_speed
@@ -88,7 +106,13 @@ class Enemy(pg.sprite.Sprite):
     """
 
     def __init__(self, width, height, id) -> None:
-        super().__init__()
+
+        """
+        :param width: width of player
+        :param height: height of player
+        :param id:
+        """
+        pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((width, height))
         self.image.fill(enemy_block)
         self.id = id
@@ -101,6 +125,13 @@ class Enemy(pg.sprite.Sprite):
         self.enemy_speed = random.randint(7, 25)
 
     def update(self, *args, **kwargs) -> None:
+
+        """
+        :param args:
+        :param kwargs:
+        :return: None
+        """
+
         self.rect.y += self.enemy_speed
 
         if self.rect.top > HEIGHT:
@@ -109,6 +140,12 @@ class Enemy(pg.sprite.Sprite):
             self.enemy_speed = random.randint(7, 25)
 
     def draw(self, screen) -> None:
+
+        """
+        :param screen:
+        :return: None
+        """
+
         screen.blit(self.image, self.rect)
 
 
@@ -127,6 +164,12 @@ class Timer(pg.sprite.Sprite):
     def update(self, *args, **kwargs) -> None: ...
 
     def draw(self, screen) -> None:
+
+        """
+        :param screen:
+        :return: None
+        """
+
         elapsed_time = (pg.time.get_ticks() - game_time) // 1000
         remaining_time = max(game_time - elapsed_time, 0)
         timer_text = self.font.render("Time: " + str(remaining_time), True, "lime")
@@ -156,6 +199,12 @@ class block_collision(pg.sprite.Sprite):
     """
 
     def __init__(self, my_block, enemy_block) -> None:
+
+        """
+        :param my_block:
+        :param enemy_block:
+        """
+
         super().__init__()
         self.player = my_block
         self.enemies = enemy_block
@@ -164,6 +213,11 @@ class block_collision(pg.sprite.Sprite):
     def update(self, *args, **kwargs) -> None: ...
 
     def collision(self) -> None:
+
+        """
+        :return: None
+        """
+
         for enemy in self.enemies:
             if pg.sprite.collide_rect(self.player, enemy):
                 self.coll_count += 1
@@ -197,6 +251,11 @@ class act_game:
         self.timer = Timer()
 
     def running(self) -> None:
+
+        """
+        :return: None
+        """
+
         done = False
         while not done:
             for event in pg.event.get():
@@ -230,6 +289,11 @@ class act_game:
 
 
 def main() -> None:
+
+    """
+    :return: None
+    """
+
     game = act_game()
     game.running()
 
